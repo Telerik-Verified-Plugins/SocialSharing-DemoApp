@@ -3,7 +3,7 @@
   <PropertyGroup>
     <ProjectGuid>cb629f23-26ad-494b-aef3-3a20777a4c36</ProjectGuid>
     <ProjectTypeGuids>{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}</ProjectTypeGuids>
-    <AppIdentifier>nl.piggy.clientapp</AppIdentifier>
+    <AppIdentifier>nl.xservices.plugindemo.socialsharing</AppIdentifier>
     <ProjectName>SocialSharing-PhoneGap-Plugin-DemoApp</ProjectName>
     <IsRunnable>true</IsRunnable>
     <FrameworkVersion>3.2.0</FrameworkVersion>
