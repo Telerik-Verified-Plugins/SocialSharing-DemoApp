@@ -5,7 +5,7 @@
     DemoViewModel = kendo.data.ObservableObject.extend({
 
         shareMessageAndSubject: function () {
-            this.share('The message', 'The subject');
+            this.share('The message', 'The subject', null, null);
         },
 
         shareImage: function () {
@@ -21,11 +21,11 @@
         },
 
         shareURLViaFacebook: function () {
-            window.plugins.socialsharing.shareViaFacebook('The message', 'http://www.telerik.com', null, null, this.onSuccess, this.onError);
+            window.plugins.socialsharing.shareViaFacebook('The message', null, 'http://www.telerik.com', this.onSuccess, this.onError);
         },
 
         shareMessageViaWhatsApp: function () {
-            window.plugins.socialsharing.shareViaWhatsApp ('The message', null, null, null, this.onSuccess, this.onError);
+            window.plugins.socialsharing.shareViaWhatsApp ('The message', null, null, this.onSuccess, this.onError);
         },
 
         shareMessageViaSMS: function () {
