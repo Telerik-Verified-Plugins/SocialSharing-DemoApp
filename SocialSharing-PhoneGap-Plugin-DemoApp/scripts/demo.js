@@ -4,18 +4,42 @@
 
     DemoViewModel = kendo.data.ObservableObject.extend({
 
-        // TODO impl SocialSharing
-        
-        
-        // short lasting messages
-        showToast_shortTop: function () {
-            window.plugins.toast.showShortTop('Your changes have been saved', this.onSuccess, this.onError);
-        },
-        
-        showToast_shortCenter: function () {
-            window.plugins.toast.showShortCenter('There were validation errors', this.onSuccess, this.onError);
+        shareMessageAndSubject: function () {
+            this.share('The message', 'The subject');
         },
 
+        shareImage: function () {
+            this.share(null, null, 'http://www.telerik.com/sfimages/default-source/productsimages/mobilecraft/telerik-platform.png');
+        },
+
+        shareURL: function () {
+            this.share(null, null, null, 'http://www.telerik.com');
+        },
+        
+        shareMessageAndImageViaTwitter: function () {
+            window.plugins.socialsharing.shareViaTwitter('The message', 'http://www.telerik.com/sfimages/default-source/productsimages/mobilecraft/telerik-platform.png', null, this.onSuccess, this.onError);
+        },
+
+        shareURLViaFacebook: function () {
+            window.plugins.socialsharing.shareViaFacebook('The message', 'http://www.telerik.com', null, null, this.onSuccess, this.onError);
+        },
+
+        shareMessageViaWhatsApp: function () {
+            window.plugins.socialsharing.shareViaWhatsApp ('The message', null, null, null, this.onSuccess, this.onError);
+        },
+
+        shareMessageViaSMS: function () {
+            window.plugins.socialsharing.shareViaSMS ('The message', '+31612345678,+31623456789', this.onSuccess, this.onError);
+        },
+        
+        share: function (message, subject, image, link) {
+            if (window.plugins === undefined) {
+                alert('Plugin not available. Are you running in the simulator?');
+            } else {
+ 	           window.plugins.socialsharing.share(message, subject, image, link, this.onSuccess, this.onError);
+            }
+        },
+        
         // callbacks
         onSuccess: function(msg) {
             console.log('SocialSharing success: ' + msg);

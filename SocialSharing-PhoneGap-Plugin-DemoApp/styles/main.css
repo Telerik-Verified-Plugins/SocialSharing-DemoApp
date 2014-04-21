@@ -20,6 +20,17 @@
     width: 80%;
 }
 
+h3.hassubtitle {
+    margin-bottom: 0;
+}
+
+.subtitle {
+    color: #999;
+    font-size: 0.8em;
+    margin-left: 1rem;
+    margin-bottom: 0.8rem;
+}
+
 /* RETINA DISPLAY STYLES */
 @media only screen and (-webkit-min-device-pixel-ratio: 2),(min-resolution: 192dpi) {
     .logo-image {
