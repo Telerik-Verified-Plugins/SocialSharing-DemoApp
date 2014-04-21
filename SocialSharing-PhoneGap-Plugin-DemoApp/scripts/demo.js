@@ -8,12 +8,12 @@
             this.share('The message', 'The subject', null, null);
         },
 
-        shareImage: function () {
-            this.share(null, null, 'http://www.telerik.com/sfimages/default-source/productsimages/mobilecraft/telerik-platform.png');
+        shareMessageAndImage: function () {
+            this.share('The message', 'The subject', 'http://www.telerik.com/sfimages/default-source/productsimages/mobilecraft/telerik-platform.png', null);
         },
 
-        shareURL: function () {
-            this.share(null, null, null, 'http://www.telerik.com');
+        shareMessageAndURL: function () {
+            this.share('The message', 'The subject', null, 'http://www.telerik.com');
         },
         
         shareMessageAndImageViaTwitter: function () {
