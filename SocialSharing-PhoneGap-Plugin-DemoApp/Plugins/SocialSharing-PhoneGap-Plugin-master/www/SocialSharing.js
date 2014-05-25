@@ -1,6 +1,16 @@
 function SocialSharing() {
 }
 
+// Override this method to set the location where you want the iPad popup arrow to appear.
+// If not overridden with different values, the popup is not used. Example:
+//
+//   window.plugins.socialsharing.iPadPopupCoordinates = function() {
+//     return "100,100,200,300";
+//   };
+SocialSharing.prototype.iPadPopupCoordinates = function () {
+  return "-1,-1,-1,-1"; // left,top,width,height
+};
+
 SocialSharing.prototype.available = function (callback) {
   cordova.exec(function (avail) {
     callback(avail ? true : false);
@@ -27,8 +37,16 @@ SocialSharing.prototype.shareViaSMS = function (message, phonenumbers, successCa
   cordova.exec(successCallback, errorCallback, "SocialSharing", "shareViaSMS", [message, phonenumbers]);
 };
 
+SocialSharing.prototype.shareViaEmail = function (message, subject, toArray, ccArray, bccArray, fileArray, successCallback, errorCallback) {
+  cordova.exec(successCallback, errorCallback, "SocialSharing", "shareViaEmail", [message, subject, toArray, ccArray, bccArray, fileArray]);
+};
+
 SocialSharing.prototype.canShareVia = function (via, message, subject, image, url, successCallback, errorCallback) {
   cordova.exec(successCallback, errorCallback, "SocialSharing", "canShareVia", [message, subject, image, url, via]);
+};
+
+SocialSharing.prototype.canShareViaEmail = function (successCallback, errorCallback) {
+  cordova.exec(successCallback, errorCallback, "SocialSharing", "canShareViaEmail", []);
 };
 
 SocialSharing.prototype.shareVia = function (via, message, subject, image, url, successCallback, errorCallback) {

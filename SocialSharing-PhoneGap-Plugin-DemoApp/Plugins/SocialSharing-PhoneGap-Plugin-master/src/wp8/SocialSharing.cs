@@ -44,5 +44,28 @@ namespace Cordova.Extension.Commands {
       // unfortunately, there is no way to tell if something was shared, so just invoke the successCallback
 			DispatchCommandResult(new PluginResult(PluginResult.Status.OK));
 		}
-	}
+
+    public void canShareViaEmail(string jsonArgs) {
+			DispatchCommandResult(new PluginResult(PluginResult.Status.OK));
+    }
+
+    // HTML and attachments are currently not supported on WP8
+    public void shareViaEmail(string jsonArgs) {
+      var options = JsonHelper.Deserialize<string[]>(jsonArgs);
+      EmailComposeTask draft = new EmailComposeTask();
+      draft.Body = options[0];
+      draft.Subject = options[1];
+      if (!"null".Equals(options[2])) {
+        draft.To = string.Join(",", options[2]);
+      }
+      if (!"null".Equals(options[3])) {
+          draft.Cc = string.Join(",", options[3]);
+      }
+      if (!"null".Equals(options[4])) {
+          draft.Bcc = string.Join(",", options[4]);
+      }
+      draft.Show();
+      DispatchCommandResult(new PluginResult(PluginResult.Status.OK, true));
+    }
+  }
 }

@@ -47,6 +47,21 @@
             }
         },
         
+        shareViaEmail: function () {
+            if (!this.checkSimulator()) {
+ 	           window.plugins.socialsharing.shareViaEmail (
+                   'The message',
+                   'The subject',
+                   ['to@person1.com', 'to@person2.com'], // TO: must be null or an array
+                   ['cc@person1.com'], // CC: must be null or an array
+                   null, // BCC: must be null or an array
+                   ['https://www.google.nl/images/srpr/logo4w.png'],
+                   this.onSuccess,
+                   this.onError
+               );
+            }
+        },
+
         checkSimulator: function() {
             if (window.plugins === undefined) {
                 alert('Plugin not available. Are you running in the simulator?');
