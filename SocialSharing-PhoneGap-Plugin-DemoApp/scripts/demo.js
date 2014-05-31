@@ -23,15 +23,16 @@
         },
 
 
-        shareMessageAndImageViaTwitter: function () {
+        shareMessageAndURLViaTwitter: function () {
             if (!this.checkSimulator()) {
- 	           window.plugins.socialsharing.shareViaTwitter('The message', 'http://www.telerik.com/sfimages/default-source/productsimages/mobilecraft/telerik-platform.png', null, this.onSuccess, this.onError);
+                window.plugins.socialsharing.shareViaTwitter('The message', null, 'http://www.telerik.com', this.onSuccess, this.onError);
             }
         },
 
-        shareURLViaFacebook: function () {
+        shareImagesViaFacebook: function () {
             if (!this.checkSimulator()) {
-	            window.plugins.socialsharing.shareViaFacebook('The message', null, 'http://www.telerik.com', this.onSuccess, this.onError);
+                // For the files param you can pass null, a single string or an array.
+                window.plugins.socialsharing.shareViaFacebook('The message', ['www/styles/images/logo.png', 'http://www.telerik.com/sfimages/default-source/productsimages/mobilecraft/telerik-platform.png'], null, this.onSuccess, this.onError);
             }
         },
 

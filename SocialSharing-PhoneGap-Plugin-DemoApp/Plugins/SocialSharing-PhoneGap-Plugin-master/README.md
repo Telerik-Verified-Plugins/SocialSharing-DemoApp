@@ -26,8 +26,8 @@ This plugin allows you to use the native sharing window of your mobile device.
 
 * Works on Android, version 2.3.3 and higher (probably 2.2 as well).
 * Works on iOS6 and iOS7.
-* Works on Windows Phone 8 since v4.0 of this plugin (maybe even 7, but I have no such testdevice).
-* Share text, a link, an image (or other files like pdf or ics). Subject is also supported, when the receiving app supports it.
+* Works on Windows Phone 8 since v4.0 of this plugin (maybe even WP7, but I have no such testdevice).
+* Share text, a link, a images (or other files like pdf or ics). Subject is also supported, when the receiving app supports it.
 * Supports sharing files from the internet, the local filesystem, or from the www folder.
 * You can skip the sharing dialog and directly share to Twitter, Facebook, or other apps.
 * Compatible with [Cordova Plugman](https://github.com/apache/cordova-plugman).
@@ -120,8 +120,6 @@ Android: Copy `SocialSharing.java` to `platforms/android/src/nl/xservices/plugin
 Window Phone: Copy `SocialSharing.cs` to `platforms/wp8/Plugins/nl.x-services.plugins.socialsharing` (create the folders)
 
 ### PhoneGap Build
-NOTE: Windows Phone 8 is only supported by version 4.0 and up.
-
 SocialSharing works with PhoneGap build too! Version 3.0 and up of this plugin are compatible with PhoneGap 3.0.0 and up.
 Use an older version of this plugin if you target PhoneGap < 3.0.0.
 
@@ -131,7 +129,7 @@ Just add the following xml to your `config.xml` to always use the latest version
 ```
 or to use an exact version:
 ```xml
-<gap:plugin name="nl.x-services.plugins.socialsharing" version="4.0" />
+<gap:plugin name="nl.x-services.plugins.socialsharing" version="4.3.0" />
 ```
 
 SocialSharing.js is brought in automatically. There is no need to change or add anything in your html.
@@ -155,7 +153,9 @@ Here are some examples you can copy-paste to test the various combinations:
 <button onclick="window.plugins.socialsharing.share('Message and link', null, null, 'http://www.x-services.nl')">message and link</button>
 <button onclick="window.plugins.socialsharing.share(null, null, 'https://www.google.nl/images/srpr/logo4w.png', null)">image only</button>
 // Beware: passing a base64 file as 'data:' is not supported on Android 2.x: https://code.google.com/p/android/issues/detail?id=7901#c43
-<button onclick="window.plugins.socialsharing.share(null, null, 'data:image/png;base64,R0lGODlhDAAMALMBAP8AAP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAUKAAEALAAAAAAMAAwAQAQZMMhJK7iY4p3nlZ8XgmNlnibXdVqolmhcRQA7', null)">base64 image only</button>
+// Hint: when sharing a base64 encoded file on Android you can set the filename by passing it as the subject (second param)
+<button onclick="window.plugins.socialsharing.share(null, 'Android filename', 'data:image/png;base64,R0lGODlhDAAMALMBAP8AAP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAUKAAEALAAAAAAMAAwAQAQZMMhJK7iY4p3nlZ8XgmNlnibXdVqolmhcRQA7', null)">base64 image only</button>
+// Hint: you can share multiple files by using an array as thirds param: ['file 1','file 2', ..]
 <button onclick="window.plugins.socialsharing.share('Message and image', null, 'https://www.google.nl/images/srpr/logo4w.png', null)">message and image</button>
 <button onclick="window.plugins.socialsharing.share('Message, image and link', null, 'https://www.google.nl/images/srpr/logo4w.png', 'http://www.x-services.nl')">message, image and link</button>
 <button onclick="window.plugins.socialsharing.share('Message, subject, image and link', 'The subject', 'https://www.google.nl/images/srpr/logo4w.png', 'http://www.x-services.nl')">message, subject, image and link</button>
@@ -169,6 +169,7 @@ Example: share a PDF file from the local www folder:
 ### Sharing directly to..
 Twitter
 ```html
+<!-- unlike most apps Twitter doesn't like it when you use an array to pass multiple files as the second param -->
 <button onclick="window.plugins.socialsharing.shareViaTwitter('Message via Twitter')">message via Twitter</button>
 <button onclick="window.plugins.socialsharing.shareViaTwitter('Message and link via Twitter', null, 'http://www.x-services.nl')">msg and link via Twitter</button>
 ```
@@ -193,14 +194,13 @@ SMS
 
 Email - code inspired by the [EmailComposer plugin](https://github.com/katzer/cordova-plugin-email-composer)
 ```js
-// message, subject, toArray, ccArray, bccArray, fileArray, successCallback, errorCallback
 window.plugins.socialsharing.shareViaEmail(
   'Message',
   'Subject',
   ['to@person1.com', 'to@person2.com'], // TO: must be null or an array
   ['cc@person1.com'], // CC: must be null or an array
   null, // BCC: must be null or an array
-  ['https://www.google.nl/images/srpr/logo4w.png'], // FILES: must be null or an array
+  ['https://www.google.nl/images/srpr/logo4w.png','www/localimage.png'], // FILES: can be null, a string, or an array
   onSuccess, // called when sharing worked, but also when the user cancelled sharing via email (I've found no way to detect the difference)
   onError // called when sh*t hits the fan
 );
@@ -267,6 +267,25 @@ Since version 3.8 the plugin passes a boolean to the successCallback to let the 
 On iOS this works as expected, but on Android some sharing targets may return false, even though sharing succeeded. This is not a limitation of the plugin, it's the target app which doesn't play nice.
 To make it more confusing, when sharing via SMS on Android, you'll likely always have the successCallback invoked. Thanks Google.
 
+#### Sharing multiple images (or other files)
+Since version 4.3.0 of this plugin you can pass an array of files to the share and shareVia functions.
+```js
+// sharing multiple images via Facebook (you can mix protocols and file locations)
+window.plugins.socialsharing.shareViaFacebook(
+  'Optional message, may be ignored by Facebook app',
+  ['https://www.google.nl/images/srpr/logo4w.png','www/image.gif'],
+  null);
+
+// sharing a PDF and an image
+window.plugins.socialsharing.share(
+  'Optional message',
+  'Optional title',
+  ['www/manual.pdf','https://www.google.nl/images/srpr/logo4w.png'],
+  'http://www.myurl.com');
+```
+
+Note that a lot of apps support sharing multiple files, but Twitter just doesn't accept more that one file.
+
 #### iOS quirk (with camera plugin)
 When using this plugin in the callback of the Phonegap camera plugin, wrap the call to `share()` in a `setTimeout()`.
 The share widget has the same limitation as the alert dialogue [mentioned in the Phonegap documentation](http://docs.phonegap.com/en/2.9.0/cordova_camera_camera.md.html#camera.getPicture_ios_quirks).
@@ -300,7 +319,7 @@ Sharing a link:
 <button onclick="window.plugins.socialsharing.share('Optional message', 'Optional title', null, 'http://www.x-services.nl')">message, title, link</button>
 ```
 
-Sharing an image (only images from the internet are supported):
+Sharing an image (only images from the internet are supported). If you pass more than one image as an array, only the first one is used:
 ```html
 <button onclick="window.plugins.socialsharing.share('Optional message', 'Optional title', 'https://www.google.nl/images/srpr/logo4w.png', null)">image only</button>
 ```

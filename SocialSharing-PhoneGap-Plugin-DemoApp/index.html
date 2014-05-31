@@ -37,7 +37,7 @@
         </p>
         <p>
             Custom plugins don't work in the simulator and the AppBuilder companion app,
-            so inside Telerik AppBuilder choose Run - Build - iOS/Android - App package.
+            so inside Telerik AppBuilder choose Run - Build - iOS/Android/Windows Phone - App package.
         </p>
     </div>
 
@@ -52,15 +52,17 @@
             <button data-role="button" class="button" data-bind="click: shareMessageAndSubject">Message and subject</button>
             <button data-role="button" class="button" data-bind="click: shareMessageAndImage">Message and image</button>
             <button data-role="button" class="button" data-bind="click: shareMessageAndURL">Message and URL</button>
+            <br/>
 
             <h3 class="hassubtitle">Sharing via a specific app</h3>
             <div class="subtitle">
                 For iOS and Android only
             </div>
-            <button data-role="button" class="button" data-bind="click: shareMessageAndImageViaTwitter">Tweet a message and image</button>
-            <button data-role="button" class="button" data-bind="click: shareURLViaFacebook">Share a URL on Facebook</button>
+            <button data-role="button" class="button" data-bind="click: shareMessageAndURLViaTwitter">Tweet a message and link</button>
+            <button data-role="button" class="button" data-bind="click: shareImagesViaFacebook">Share multiple images on Facebook</button>
             <button data-role="button" class="button" data-bind="click: shareMessageViaWhatsApp">WhatsApp a message</button>
             <button data-role="button" class="button" data-bind="click: shareMessageViaSMS">SMS a message</button>
+            <br/>
 
             <h3>Share via email</h3>
             <button data-role="button" class="button" data-bind="click: shareViaEmail">Compose an email</button>
