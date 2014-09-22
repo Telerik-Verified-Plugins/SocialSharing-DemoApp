@@ -1,7 +1,7 @@
 function SocialSharing() {
 }
 
-// Override this method to set the location where you want the iPad popup arrow to appear.
+// Override this method (after deviceready) to set the location where you want the iPad popup arrow to appear.
 // If not overridden with different values, the popup is not used. Example:
 //
 //   window.plugins.socialsharing.iPadPopupCoordinates = function() {
@@ -34,6 +34,11 @@ SocialSharing.prototype.shareViaTwitter = function (message, file /* multiple no
 
 SocialSharing.prototype.shareViaFacebook = function (message, fileOrFileArray, url, successCallback, errorCallback) {
   cordova.exec(successCallback, this._getErrorCallback(errorCallback, "shareViaFacebook"), "SocialSharing", "shareViaFacebook", [message, null, this._asArray(fileOrFileArray), url]);
+};
+
+SocialSharing.prototype.shareViaFacebookWithPasteMessageHint = function (message, fileOrFileArray, url, pasteMessageHint, successCallback, errorCallback) {
+  pasteMessageHint = pasteMessageHint || "If you like you can paste a message from your clipboard";
+  cordova.exec(successCallback, this._getErrorCallback(errorCallback, "shareViaFacebookWithPasteMessageHint"), "SocialSharing", "shareViaFacebookWithPasteMessageHint", [message, null, this._asArray(fileOrFileArray), url, pasteMessageHint]);
 };
 
 SocialSharing.prototype.shareViaWhatsApp = function (message, fileOrFileArray, url, successCallback, errorCallback) {
