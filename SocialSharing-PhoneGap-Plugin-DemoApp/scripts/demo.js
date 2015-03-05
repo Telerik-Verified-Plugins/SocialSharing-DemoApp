@@ -8,8 +8,8 @@
             this.share('The message', 'The subject', null, null);
         },
 
-        shareMessageAndImage: function () {
-            this.share('The message', 'The subject', 'http://www.telerik.com/sfimages/default-source/productsimages/mobilecraft/telerik-platform.png', null);
+        shareImage: function () {
+            this.share(null, null, 'http://www.telerik.com/sfimages/default-source/productsimages/mobilecraft/telerik-platform.png', null);
         },
 
         shareMessageAndURL: function () {
