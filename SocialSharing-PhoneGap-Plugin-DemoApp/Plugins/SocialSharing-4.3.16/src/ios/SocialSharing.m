@@ -8,6 +8,7 @@
 
 @implementation SocialSharing {
   UIPopoverController *_popover;
+  NSString *_popupCoordinates;
 }
 
 - (void)pluginInitialize {
@@ -26,7 +27,14 @@
 }
 
 - (NSString*)getIPadPopupCoordinates {
+  if (_popupCoordinates != nil) {
+    return _popupCoordinates;
+  }
   return [self.webView stringByEvaluatingJavaScriptFromString:@"window.plugins.socialsharing.iPadPopupCoordinates();"];
+}
+
+- (void)setIPadPopupCoordinates:(CDVInvokedUrlCommand*)command {
+  _popupCoordinates  = [command.arguments objectAtIndex:0];
 }
 
 - (CGRect)getPopupRectFromIPadPopupCoordinates:(NSArray*)comps {
@@ -83,15 +91,16 @@
     CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:completed];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
   }];
-  
-  // possible future addition: exclude some share targets.. if building locally you may uncomment these lines
-  //    NSArray * excludeActivities = @[UIActivityTypeAssignToContact, UIActivityTypeCopyToPasteboard];
-  //    activityVC.excludedActivityTypes = excludeActivities;
-  
+
+   NSArray * socialSharingExcludeActivities = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"SocialSharingExcludeActivities"];
+   if (socialSharingExcludeActivities!=nil && [socialSharingExcludeActivities count] > 0) {
+       activityVC.excludedActivityTypes = socialSharingExcludeActivities;
+   }
+
   // iPad on iOS >= 8 needs a different approach
   if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
     NSString* iPadCoords = [self getIPadPopupCoordinates];
-    if (![iPadCoords isEqual:@"-1,-1,-1,-1"]) {
+    if (iPadCoords != nil && ![iPadCoords isEqual:@"-1,-1,-1,-1"]) {
       NSArray *comps = [iPadCoords componentsSeparatedByString:@","];
       CGRect rect = [self getPopupRectFromIPadPopupCoordinates:comps];
       if ([activityVC respondsToSelector:@selector(popoverPresentationController)]) {
@@ -216,8 +225,10 @@
   [self.viewController presentViewController:composeViewController animated:YES completion:nil];
   
   [composeViewController setCompletionHandler:^(SLComposeViewControllerResult result) {
-    // now check for availability of the app and invoke the correct callback
-    if ([self isAvailableForSharing:command type:type]) {
+    if (SLComposeViewControllerResultCancelled == result) {
+      CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"cancelled"];
+      [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    } else if ([self isAvailableForSharing:command type:type]) {
       CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:SLComposeViewControllerResultDone == result];
       [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     } else {
@@ -227,6 +238,8 @@
     // required for iOS6 (issues #162 and #167)
     [self.viewController dismissViewControllerAnimated:YES completion:nil];
   }];
+
+  [self.viewController presentViewController:composeViewController animated:YES completion:nil];
 }
 
 - (void)shareViaEmail:(CDVInvokedUrlCommand*)command {
@@ -463,6 +476,37 @@
   } else {
     CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"not available"];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+  }
+}
+
+- (void)saveToPhotoAlbum:(CDVInvokedUrlCommand*)command {
+  self.command = command;
+  NSArray *filenames = [command.arguments objectAtIndex:0];
+  [self.commandDelegate runInBackground:^{
+    bool shared = false;
+    for (NSString* filename in filenames) {
+      UIImage* image = [self getImage:filename];
+      if (image != nil) {
+        shared = true;
+        UIImageWriteToSavedPhotosAlbum(image, self, @selector(thisImage:wasSavedToPhotoAlbumWithError:contextInfo:), nil);
+      }
+    }
+    if (!shared) {
+      CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"no valid image was passed"];
+      [self.commandDelegate sendPluginResult:pluginResult callbackId:self.command.callbackId];
+    }
+  }];
+}
+
+// called from saveToPhotoAlbum, note that we only send feedback for the first image that's being saved (not keeping the callback)
+// but since the UIImageWriteToSavedPhotosAlbum function is only called with valid images that should not be a problem
+- (void)thisImage:(UIImage *)image wasSavedToPhotoAlbumWithError:(NSError *)error contextInfo:(void*)ctxInfo {
+  if (error) {
+    CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error.localizedDescription];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.command.callbackId];
+  } else {
+    CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.command.callbackId];
   }
 }
 
