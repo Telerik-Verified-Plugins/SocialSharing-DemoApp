@@ -9,6 +9,7 @@
     "android.permission.INTERNET"
   ],
   "CorePlugins": [
+    "org.apache.cordova.camera",
     "org.apache.cordova.console",
     "org.apache.cordova.device",
     "org.apache.cordova.dialogs",
@@ -34,5 +35,7 @@
   "projectVersion": "1",
   "WP8PublisherID": "{e466b966-5042-4274-b147-5032260e3276}",
   "WP8ProductID": "{cd63ad17-232c-40a6-8aab-7185d580ebd7}",
-  "CordovaPluginVariables": {}
+  "CordovaPluginVariables": {},
+  "WP8WindowsPublisherName": "CN=Telerik",
+  "WP8PackageIdentityName": "1234Telerik.com.telerik.plugindemo.socialsharing"
 }

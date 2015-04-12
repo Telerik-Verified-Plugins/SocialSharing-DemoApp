@@ -22,6 +22,30 @@
             }
         },
 
+        tweetSelfie: function () {
+            // doesn't need to be a selfie of course, but that seems to be hot these days ;)
+            if (!this.checkSimulator()) {
+                navigator.camera.getPicture(
+                  function(base64EncodedImg) {
+                    // wrap in a timeout so the native view of SocialSharing doesn't collide with the one from the camera plugin
+                    setTimeout(function() {
+                      window.plugins.socialsharing.shareViaTwitter('Check my latest selfie. I\'m awesome!', 'data:image/jpg;base64,'+base64EncodedImg, null, null, null);
+                    }, 500);
+                  },
+                  function(msg) {
+                    alert("Error: " + msg);
+                  },
+                  {
+                    quality: 50,
+                    targetWidth: 600,
+                    targetHeight: 600,
+                    encodingType: Camera.EncodingType.JPEG,
+                    destinationType: Camera.DestinationType.DATA_URL,
+                    sourceType : Camera.PictureSourceType.CAMERA
+                  }
+                );
+            }
+        },
 
         shareMessageAndURLViaTwitter: function () {
             if (!this.checkSimulator()) {
