@@ -56,7 +56,15 @@
         shareImagesViaFacebook: function () {
             if (!this.checkSimulator()) {
                 // For the files param you can pass null, a single string or an array.
-                window.plugins.socialsharing.shareViaFacebook('The message', ['www/styles/images/logo.png', 'http://www.telerik.com/sfimages/default-source/productsimages/mobilecraft/telerik-platform.png'], null, this.onSuccess, this.onError);
+              	// Note that the passed message won't be prefilled for Facebook (tip: use shareViaFacebookWithPasteMessageHint)
+                window.plugins.socialsharing.shareViaFacebook('The message, not shown on Android. On iOS only when no Facebook app is installed.', ['www/styles/images/logo.png', 'http://www.telerik.com/sfimages/default-source/productsimages/mobilecraft/telerik-platform.png'], null, this.onSuccess, this.onError);
+            }
+        },
+
+        shareMessageAndImageViaFacebook: function () {
+            if (!this.checkSimulator()) {
+                // For the files param you can pass null, a single string or an array.
+                window.plugins.socialsharing.shareViaFacebookWithPasteMessageHint('Wow, your clipboard is a mess! Do you copy-paste a lot sir?', 'www/styles/images/logo.png', null, null, this.onSuccess, this.onError);
             }
         },
 

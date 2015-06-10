@@ -4,24 +4,25 @@
   "AppIdentifier": "com.telerik.plugindemo.socialsharing",
   "ProjectName": "SocialSharing-PhoneGap-Plugin-DemoApp",
   "IsRunnable": "true",
-  "FrameworkVersion": "3.7.0",
+  "FrameworkVersion": "4.0.0",
   "AndroidPermissions": [
     "android.permission.INTERNET"
   ],
   "CorePlugins": [
-    "org.apache.cordova.camera",
-    "org.apache.cordova.console",
-    "org.apache.cordova.device",
-    "org.apache.cordova.dialogs",
-    "org.apache.cordova.splashscreen",
-    "org.apache.cordova.statusbar"
+    "cordova-plugin-camera",
+    "cordova-plugin-console",
+    "cordova-plugin-crosswalk-webview@1.2.0",
+    "cordova-plugin-device",
+    "cordova-plugin-dialogs",
+    "cordova-plugin-splashscreen",
+    "cordova-plugin-statusbar"
   ],
   "DeviceOrientations": [
     "Portrait",
     "Landscape"
   ],
   "iOSStatusBarStyle": "Default",
-  "AndroidHardwareAcceleration": "false",
+  "AndroidHardwareAcceleration": "true",
   "WP8SupportedResolutions": [
     "ID_RESOLUTION_WVGA",
     "ID_RESOLUTION_WXGA",
