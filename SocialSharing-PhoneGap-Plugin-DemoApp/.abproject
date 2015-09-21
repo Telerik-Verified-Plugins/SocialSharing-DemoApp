@@ -15,7 +15,8 @@
     "cordova-plugin-device",
     "cordova-plugin-dialogs",
     "cordova-plugin-splashscreen",
-    "cordova-plugin-statusbar"
+    "cordova-plugin-statusbar",
+    "nl.x-services.plugins.socialsharing@5.0.2"
   ],
   "DeviceOrientations": [
     "Portrait",

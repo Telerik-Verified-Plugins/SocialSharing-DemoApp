@@ -29,7 +29,7 @@
                   function(base64EncodedImg) {
                     // wrap in a timeout so the native view of SocialSharing doesn't collide with the one from the camera plugin
                     setTimeout(function() {
-                      window.plugins.socialsharing.shareViaTwitter('Check my latest selfie. I\'m awesome!', 'data:image/jpg;base64,'+base64EncodedImg, null, null, null);
+                      window.plugins.socialsharing.shareViaTwitter('I can\'t seem to do a presentation without tweeting a selfie. Sue me!', 'data:image/jpg;base64,'+base64EncodedImg, null, null, null);
                     }, 500);
                   },
                   function(msg) {
