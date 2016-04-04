@@ -11,12 +11,12 @@
   "CorePlugins": [
     "cordova-plugin-camera",
     "cordova-plugin-console",
-    "cordova-plugin-crosswalk-webview@1.2.0",
+    "cordova-plugin-crosswalk-webview@1.5.0",
     "cordova-plugin-device",
     "cordova-plugin-dialogs",
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
-    "nl.x-services.plugins.socialsharing@5.0.6"
+    "nl.x-services.plugins.socialsharing@5.0.11"
   ],
   "DeviceOrientations": [
     "Portrait",
@@ -29,7 +29,7 @@
     "ID_RESOLUTION_WXGA",
     "ID_RESOLUTION_HD720P"
   ],
-  "BundleVersion": "1.0",
+  "BundleVersion": "1.0.1",
   "Description": "SocialSharing-PhoneGap-Plugin-DemoApp",
   "DisplayName": "SocialSharing plugin demo",
   "Author": "Telerik",
@@ -39,5 +39,6 @@
   "WP8ProductID": "{cd63ad17-232c-40a6-8aab-7185d580ebd7}",
   "CordovaPluginVariables": {},
   "WP8WindowsPublisherName": "CN=Telerik",
-  "WP8PackageIdentityName": "1234Telerik.com.telerik.plugindemo.socialsharing"
+  "WP8PackageIdentityName": "1234Telerik.com.telerik.plugindemo.socialsharing",
+  "AndroidVersionCode": "1"
 }
